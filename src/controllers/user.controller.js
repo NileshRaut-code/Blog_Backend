@@ -74,7 +74,12 @@ const registerUser = asyncHandler(async (req, res) => {
     .cookie("refreshToken", refreshToken, options)
     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
-
+const getCurrentUser = asyncHandler(async (req, res) => {
+  console.log(req.user);
+  return res
+    .status(200)
+    .json(new ApiResponse(200, req.user, "User fetched successfully"));
+});
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
   //console.log(email);
@@ -151,4 +156,4 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"));
 });
 
-export { registerUser, loginUser, logoutUser };
+export { registerUser, loginUser, logoutUser, getCurrentUser };

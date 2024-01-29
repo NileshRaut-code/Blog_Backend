@@ -19,6 +19,14 @@ const addPost = asyncHandler(async (req, res) => {
     const imageurl = await uploadOnCloudinary(imagepath);
     req.body.image = imageurl.url;
   }
+  console.log(req.body);
+  const existedUser = await Post.findOne({
+    $or: [{ title: req.body.title }, { slug: req.body.slug }],
+  });
+
+  if (existedUser) {
+    throw new ApiError(409, "Post with Title or Slug already exists");
+  }
 
   const post = await Post.create(req.body);
 
@@ -44,9 +52,9 @@ const allPosts = asyncHandler(async (req, res) => {
 });
 
 const getPost = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+  const { slug } = req.params;
   //console.log(req.params);
-  const post = await Post.findById(id).populate({
+  const post = await Post.findOne({ slug: slug }).populate({
     path: "author",
     select: "-password -refreshToken",
   });

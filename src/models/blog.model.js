@@ -7,6 +7,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "title is required"],
       trim: true,
+      unique: true,
     },
 
     description: {
@@ -17,6 +18,10 @@ const PostSchema = new mongoose.Schema(
 
     image: {
       type: String,
+    },
+    slug: {
+      type: String,
+      unique: true,
     },
 
     author: {
