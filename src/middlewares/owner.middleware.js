@@ -11,10 +11,10 @@ export const verifyOwner = asyncHandler(async (req, _, next) => {
     throw new ApiError(404, "Post Does not Exist");
   }
   const author = pdata.author;
-  console.log(author, userId);
-  console.log(String(author) == String(userId));
+  // console.log(author, userId);
+  // console.log(String(author) == String(userId));
   if (String(author) == String(userId)) {
-    console.log("you have rights to edit");
+    //console.log("you have rights to edit");
     return next();
   }
   throw new ApiError(401, "you have no Rights to Edit Post");

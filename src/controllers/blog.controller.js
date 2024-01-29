@@ -10,10 +10,10 @@ const addPost = asyncHandler(async (req, res) => {
   // Create The Post
   const imagepath = req.file?.path;
   req.body.author = req.user._id;
-  console.log(req.body);
-  console.log(req.body.author);
-  console.log(req.body.image);
-  console.log(req.user);
+  // console.log(req.body);
+  // console.log(req.body.author);
+  // console.log(req.body.image);
+  // console.log(req.user);
 
   if (imagepath) {
     const imageurl = await uploadOnCloudinary(imagepath);
@@ -38,14 +38,14 @@ const allPosts = asyncHandler(async (req, res) => {
     path: "author",
     select: "-password -refreshToken",
   });
-  console.log(post);
+  //console.log(post);
 
   res.status(200).json({ size: post.length, data: post });
 });
 
 const getPost = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  console.log(req.params);
+  //console.log(req.params);
   const post = await Post.findById(id).populate({
     path: "author",
     select: "-password -refreshToken",
@@ -69,7 +69,7 @@ const editPost = asyncHandler(async (req, res) => {
     },
     { new: true }
   ).select("");
-  console.log(data);
+  // console.log(data);
   res.json(new ApiResponse(200, data, "Post Succesfully Edited"));
 });
 const deletePost = asyncHandler(async (req, res) => {

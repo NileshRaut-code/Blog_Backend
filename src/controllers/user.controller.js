@@ -26,7 +26,7 @@ const generateAccessAndRefereshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, email, username, password } = req.body;
-  console.log("email: ", fullName, email, username, password, req.body);
+  //console.log("email: ", fullName, email, username, password, req.body);
 
   if (
     [fullName, email, username, password].some((field) => field?.trim() === "")
@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
   if (existedUser) {
     throw new ApiError(409, "User with email or username already exists");
   }
-  console.log(req.files);
+  //console.log(req.files);
 
   const user = await User.create({
     fullName,
@@ -77,7 +77,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
-  console.log(email);
+  //console.log(email);
 
   if (!username && !email) {
     throw new ApiError(400, "username or email is required");
