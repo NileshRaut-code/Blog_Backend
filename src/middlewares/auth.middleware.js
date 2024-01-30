@@ -14,14 +14,17 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
     console.log(req.cookies?.accessToken);
-    console.log(req.header("Authorization")?.replace("Bearer ", ""));
+    console.log(req.header("Authorization"));
 
     //we use this only for app
     //as web has cookies to store data
 
     //console.log(to ken );
     if (!token) {
-      throw new ApiError(401, "Unauthorized request");
+      throw new ApiError(
+        401,
+        `${req.header("Authorization")}Unauthorized request${token}`
+      );
     }
     //toekn ko reverse engg karke id find kare he hamne
     //verify karne ke lilye actual token + hash value /Secert (hame provide ki he )
