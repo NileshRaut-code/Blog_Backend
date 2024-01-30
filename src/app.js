@@ -6,7 +6,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://oreo-34320.web.app", "http://localhost:3000"],
+    // origin: "*",
     credentials: true,
   })
 );
