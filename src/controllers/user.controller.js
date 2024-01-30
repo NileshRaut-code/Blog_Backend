@@ -110,8 +110,8 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const options = {
-    httpOnly: false,
-    secure: false,
+    httpOnly: true,
+    secure: true,
     SameSite: "None",
     //credentials: true,
     //domain: "blogbackendnilesh.up.railway.app",
