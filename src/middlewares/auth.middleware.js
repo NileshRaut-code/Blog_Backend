@@ -12,11 +12,10 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     //store karlo usko
     const token =
       req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer ", "") ||
-      req?.body?.accessToken; //we use this only for app
+      req.header("Authorization")?.replace("Bearer ", ""); //we use this only for app
     //as web has cookies to store data
 
-    console.log(token, "This is called un valide");
+    //console.log(token);
     if (!token) {
       throw new ApiError(401, "Unauthorized request");
     }
