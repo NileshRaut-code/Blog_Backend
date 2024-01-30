@@ -12,7 +12,11 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     //store karlo usko
     const token =
       req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer ", ""); //we use this only for app
+      req.header("Authorization")?.replace("Bearer ", "");
+    console.log(req.cookies?.accessToken);
+    console.log(req.header("Authorization")?.replace("Bearer ", ""));
+
+    //we use this only for app
     //as web has cookies to store data
 
     //console.log(token);
@@ -28,6 +32,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     );
 
     if (!user) {
+      console.log(user);
       throw new ApiError(401, "Invalid Access Token");
     }
     //so hame req wale me new objedct store kardiye agar user he toh
