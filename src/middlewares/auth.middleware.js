@@ -16,7 +16,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
       req?.body?.accessToken; //we use this only for app
     //as web has cookies to store data
 
-    //console.log(token);
+    console.log(token, "This is called un valide");
     if (!token) {
       throw new ApiError(401, "Unauthorized request");
     }
