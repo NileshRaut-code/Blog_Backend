@@ -12,20 +12,12 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     //store karlo usko
     const token =
       req.cookies?.accessToken ||
-      req.header("Authorization")?.replace("Bearer ", "") ||
-      req.body?.accessToken;
-    console.log(req.cookies?.accessToken);
-    console.log(req.header("Authorization"));
-
-    //we use this only for app
+      req.header("Authorization")?.replace("Bearer ", ""); //we use this only for app
     //as web has cookies to store data
 
-    //console.log(to ken );
+    //console.log(token);
     if (!token) {
-      throw new ApiError(
-        401,
-        `${req.header("Authorization")}Unauthorized request${token}`
-      );
+      throw new ApiError(401, "Unauthorized request");
     }
     //toekn ko reverse engg karke id find kare he hamne
     //verify karne ke lilye actual token + hash value /Secert (hame provide ki he )
@@ -36,7 +28,6 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     );
 
     if (!user) {
-      console.log(user);
       throw new ApiError(401, "Invalid Access Token");
     }
     //so hame req wale me new objedct store kardiye agar user he toh
