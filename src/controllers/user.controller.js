@@ -111,7 +111,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: false,
-    secure: true,
+    secure: false,
     //credentials: true,
     //domain: "blogbackendnilesh.up.railway.app",
   };
