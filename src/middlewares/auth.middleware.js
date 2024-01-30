@@ -19,7 +19,7 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     //we use this only for app
     //as web has cookies to store data
 
-    //console.log(token);
+    //console.log(to ken );
     if (!token) {
       throw new ApiError(401, "Unauthorized request");
     }
