@@ -113,7 +113,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     credentials: true,
-    domain: "blogbackendnilesh.up.railway.app",
+    //domain: "blogbackendnilesh.up.railway.app",
   };
 
   return res
