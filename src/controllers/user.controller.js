@@ -113,11 +113,8 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     SameSite: "None",
-    //credentials: true,
-    //domain: "blogbackendnilesh.up.railway.app",
   };
-  res.setHeader("Access-Control-Allow-Origin", "https://oreo-34320.web.app/");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
+
 
   return res
     .status(200)
