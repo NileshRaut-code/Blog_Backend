@@ -38,8 +38,7 @@ const addPost = asyncHandler(async (req, res) => {
     },
     { new: true }
   );
-  res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
-  res.header("Access-Control-Allow-Credentials", "true");
+
   res.json(new ApiResponse(200, post, "Post Succesfully created"));
 });
 
@@ -80,15 +79,13 @@ const editPost = asyncHandler(async (req, res) => {
     { new: true }
   ).select("");
   // console.log(data);
-  res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
-  res.header("Access-Control-Allow-Credentials", "true");
+
   res.json(new ApiResponse(200, data, "Post Succesfully Edited"));
 });
 const deletePost = asyncHandler(async (req, res) => {
   const postId = req.params;
   await Post.deleteOne({ _id: new ObjectId(postId) });
-  res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
-  res.header("Access-Control-Allow-Credentials", "true");
+
   res.json(new ApiResponse(200, "Post Succesfull deleted"));
 });
 
