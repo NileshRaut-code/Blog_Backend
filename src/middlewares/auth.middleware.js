@@ -35,7 +35,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     }
     //so hame req wale me new objedct store kardiye agar user he toh
     req.user = user;
-    console.log(postId, req.user);
+    console.log(req.user);
     next();
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid access token");
