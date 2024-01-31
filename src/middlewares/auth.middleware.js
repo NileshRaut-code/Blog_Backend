@@ -12,6 +12,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     //store karlo usko
     res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
     res.header("Access-Control-Allow-Credentials", "true");
+
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", ""); //we use this only for app
@@ -34,7 +35,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     }
     //so hame req wale me new objedct store kardiye agar user he toh
     req.user = user;
-
+    console.log(postId, req.user);
     next();
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid access token");
