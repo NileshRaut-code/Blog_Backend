@@ -113,6 +113,7 @@ const loginUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
     SameSite: "None",
+    domain: `${process.env.CORS_DOMAIN}`,
   };
   return res
     .status(200)
