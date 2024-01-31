@@ -5,6 +5,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 export const verifyOwner = asyncHandler(async (req, _, next) => {
   const postId = req.params.id;
   const userId = req.user._id;
+  console.log(postId, userId);
   const pdata = await Post.findById(postId).select("author");
 
   //if(String(pdata))
