@@ -11,8 +11,9 @@ app.use(
       "https://oreo-34320.web.app/login",
       "https://oreo-34320.web.app/logout",
       "localhost:3000",
+      "*",
     ],
-    origin: "*",
+
     credentials: true,
   })
 );
