@@ -108,7 +108,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
-  res.header("Access-Control-Allow-Origin", "http://localhost:5000"); // Adjust to your React app's origin
+  res.header("Access-Control-Allow-Origin", "https://oreo-34320.web.app"); // Adjust to your React app's origin
   res.header("Access-Control-Allow-Credentials", "true");
 
   const options = {
