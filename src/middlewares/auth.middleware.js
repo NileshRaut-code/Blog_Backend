@@ -12,7 +12,11 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
     //store karlo usko
     res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
     res.header("Access-Control-Allow-Credentials", "true");
-
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", ""); //we use this only for app
