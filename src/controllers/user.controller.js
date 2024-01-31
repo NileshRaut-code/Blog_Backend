@@ -110,7 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
   );
 
   const options = {
-    httpOnly: true,
+    //httpOnly: true,
     secure: true,
     SameSite: "None",
     domain: process.env.CORS_DOMAIN,
