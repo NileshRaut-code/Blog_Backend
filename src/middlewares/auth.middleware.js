@@ -10,6 +10,8 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
     //in header we save bearber <Toekn >
     // we remove the "breaer " replace with empty string
     //store karlo usko
+    res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
+    res.header("Access-Control-Allow-Credentials", "true");
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", ""); //we use this only for app
