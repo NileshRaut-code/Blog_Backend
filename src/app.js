@@ -4,19 +4,7 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 
-app.use(
-  cors({
-    origin: [
-      "https://oreo-34320.web.app/",
-      "https://oreo-34320.web.app",
-      "https://oreo-34320.web.app/login",
-      "https://oreo-34320.web.app/logout",
-      "localhost:3000",
-    ],
-
-    credentials: true,
-  })
-);
+app.use(cors());
 
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
