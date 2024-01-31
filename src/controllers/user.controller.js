@@ -76,6 +76,8 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 const getCurrentUser = asyncHandler(async (req, res) => {
   console.log(req.user);
+  res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
+  res.header("Access-Control-Allow-Credentials", "true");
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "User fetched successfully"));
@@ -108,7 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
-  res.header("Access-Control-Allow-Origin", "https://oreo-34320.web.app"); // Adjust to your React app's origin
+  res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
   res.header("Access-Control-Allow-Credentials", "true");
 
   const options = {
@@ -116,14 +118,6 @@ const loginUser = asyncHandler(async (req, res) => {
     secure: true,
     SameSite: "None",
   };
-  // res.setHeader("Access-Control-Allow-Origin", "*");
-  // res.setHeader("Access-Control-Allow-Credentials", "true");
-  // res.setHeader("Access-Control-Max-Age", "1800");
-  // res.setHeader("Access-Control-Allow-Headers", "content-type");
-  // res.setHeader(
-  //   "Access-Control-Allow-Methods",
-  //   "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-  // );
 
   return res
     .status(200)
@@ -159,6 +153,8 @@ const logoutUser = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   };
+  res.header("Access-Control-Allow-Origin", `${process.env.CORS_DOMAIN}`); // Adjust to your React app's origin
+  res.header("Access-Control-Allow-Credentials", "true");
 
   return res
     .status(200)
