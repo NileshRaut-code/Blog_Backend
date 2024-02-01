@@ -10,21 +10,26 @@ process.env.CORS_DOMAIN;
 const addPost = asyncHandler(async (req, res) => {
   // Create The Post
   const imagepath = req.file?.path;
+  req.body.author = req.user._id;
+  // console.log(req.body);
+  // console.log(req.body.author);
+  // console.log(req.body.image);
+  // console.log(req.user);
 
   if (imagepath) {
     const imageurl = await uploadOnCloudinary(imagepath);
     req.body.image = imageurl.url;
   }
   console.log(req.body);
-  const { title, description, slug } = req.body;
-  console.log(title, description, slug);
-  const post = await Post.create({
-    title: req.body.title,
-    slug: req.body.slug,
-    description: req.body.description,
-    image: req.body.image || "",
-    author: req.user._id,
+  const existedUser = await Post.findOne({
+    $or: [{ title: req.body.title }, { slug: req.body.slug }],
   });
+
+  if (existedUser) {
+    throw new ApiError(409, "Post with Title or Slug already exists");
+  }
+
+  const post = await Post.create(req.body);
 
   await User.findByIdAndUpdate(
     req.user._id,
