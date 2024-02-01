@@ -7,6 +7,7 @@ import {
   addPost,
   editPost,
   deletePost,
+  getAuthor,
 } from "../controllers/blog.controller.js";
 import { verifyOwner } from "../middlewares/owner.middleware.js";
 const router = Router();
@@ -18,4 +19,7 @@ router.route("/post/:slug").get(getPost);
 
 router.route("/post/edit/:id").put(verifyJWT, verifyOwner, editPost);
 router.route("/post/delete/:id").delete(verifyJWT, verifyOwner, deletePost);
+
+router.route("/author/:username").get(getAuthor);
+
 export default router;

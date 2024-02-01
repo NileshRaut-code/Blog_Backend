@@ -88,5 +88,24 @@ const deletePost = asyncHandler(async (req, res) => {
 
   res.json(new ApiResponse(200, "Post Succesfull deleted"));
 });
+const getAuthor = asyncHandler(async (req, res) => {
+  const { username } = req.params;
 
-export { addPost, allPosts, getPost, editPost, deletePost };
+  const data = await User.findOne({ username: username }).select(
+    "-password -refreshToken"
+  );
+
+  const posts = await Post.find({ author: data._id });
+  console.log(posts);
+  console.log(data);
+
+  const userProfiledata = {
+    user: data,
+    posts: posts,
+  };
+  res
+    .status(200)
+    .json(new ApiResponse(200, userProfiledata, "User Profile data "));
+});
+
+export { addPost, allPosts, getPost, editPost, deletePost, getAuthor };
