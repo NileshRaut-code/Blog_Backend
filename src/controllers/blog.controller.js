@@ -25,11 +25,11 @@ const addPost = asyncHandler(async (req, res) => {
   //   $or: [{ title: req.body.title }, { slug: req.body.slug }],
   // });
 
-  console.log(existedUser);
+  // console.log(existedUser);
 
-  if (existedUser) {
-    throw new ApiError(409, "Post with Title or Slug already exists");
-  }
+  // if (existedUser) {
+  //   throw new ApiError(409, "Post with Title or Slug already exists");
+  // }
 
   const post = await Post.create(req.body);
 
