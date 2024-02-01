@@ -21,9 +21,11 @@ const addPost = asyncHandler(async (req, res) => {
     req.body.image = imageurl.url;
   }
   console.log(req.body);
-  const existedUser = await Post.findOne({
-    $or: [{ title: req.body.title }, { slug: req.body.slug }],
-  });
+  // const existedUser = await Post.findOne({
+  //   $or: [{ title: req.body.title }, { slug: req.body.slug }],
+  // });
+
+  console.log(existedUser);
 
   if (existedUser) {
     throw new ApiError(409, "Post with Title or Slug already exists");
