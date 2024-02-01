@@ -32,6 +32,17 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+    avatar: {
+      type: String, // cloudinary url
+      default:
+        "https://res.cloudinary.com/dowwcdnts/image/upload/v1706078608/x3neqhcnnaazgg8ay46p.png",
+      // required: true,
+    },
+    coverImage: {
+      type: String, // cloudinary url
+      default:
+        "https://res.cloudinary.com/dowwcdnts/image/upload/v1706079184/yiobla8dr5dqfmvfduk0.jpg",
+    },
   },
   {
     timestamps: true,
