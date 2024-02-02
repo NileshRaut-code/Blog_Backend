@@ -68,6 +68,7 @@ const getPost = asyncHandler(async (req, res) => {
 const editPost = asyncHandler(async (req, res) => {
   const postId = req.params;
   const { title, description } = req.body;
+  console.log(title, description);
   const data = await Post.findByIdAndUpdate(
     new ObjectId(postId),
     {
