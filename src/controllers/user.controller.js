@@ -36,7 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // return res
 
   const { fullName, email, username, password, phoneno } = req.body;
-  console.log(req.body);
+  //console.log(req.body);
   if (phoneno == null) {
     throw new ApiError(400, "Phone no is required");
   }
@@ -114,14 +114,14 @@ const registerUser = asyncHandler(async (req, res) => {
   //   .json(new ApiResponse(200, createdUser, "User registered Successfully"));
 });
 const getCurrentUser = asyncHandler(async (req, res) => {
-  console.log(req.user);
+  //console.log(req.user);
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "User fetched successfully"));
 });
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
-  //console.log(email);
+  ////console.log(email);
 
   if (!username && !email) {
     throw new ApiError(400, "username or email is required");

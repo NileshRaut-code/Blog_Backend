@@ -11,16 +11,16 @@ const addPost = asyncHandler(async (req, res) => {
   // Create The Post
   const imagepath = req.file?.path;
   req.body.author = req.user._id;
-  // console.log(req.body);
-  // console.log(req.body.author);
-  // console.log(req.body.image);
-  // console.log(req.user);
+  // //console.log(req.body);
+  // //console.log(req.body.author);
+  // //console.log(req.body.image);
+  // //console.log(req.user);
 
   if (imagepath) {
     const imageurl = await uploadOnCloudinary(imagepath);
     req.body.image = imageurl.url;
   }
-  console.log(req.body);
+  //console.log(req.body);
   const existedUser = await Post.findOne({
     $or: [{ title: req.body.title }, { slug: req.body.slug }],
   });
@@ -47,14 +47,14 @@ const allPosts = asyncHandler(async (req, res) => {
     path: "author",
     select: "-password -refreshToken",
   });
-  //console.log(post);
+  ////console.log(post);
 
   res.status(200).json({ size: post.length, data: post });
 });
 
 const getPost = asyncHandler(async (req, res) => {
   const { slug } = req.params;
-  //console.log(req.params);
+  ////console.log(req.params);
   const post = await Post.findOne({ slug: slug }).populate({
     path: "author",
     select: "-password -refreshToken",
@@ -78,7 +78,7 @@ const editPost = asyncHandler(async (req, res) => {
     },
     { new: true }
   ).select("");
-  // console.log(data);
+  // ////console.log(data);
 
   res.json(new ApiResponse(200, data, "Post Succesfully Edited"));
 });
@@ -96,8 +96,8 @@ const getAuthor = asyncHandler(async (req, res) => {
   );
 
   const posts = await Post.find({ author: data._id });
-  console.log(posts);
-  console.log(data);
+  //console.log(posts);
+  //console.log(data);
 
   const userProfiledata = {
     user: data,
