@@ -22,4 +22,23 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export { uploadOnCloudinary };
+const uploadImageToCloudinary = async (fileBuffer) => {
+  let productImage;
+  await new Promise((resolve, reject) => {
+    cloudinary.uploader
+      .upload_stream({ resource_type: "image" }, (error, result) => {
+        if (error) {
+          console.error("Error uploading image to Cloudinary:", error);
+          reject(error);
+        } else {
+          console.log("Image uploaded to Cloudinary:", result);
+          productImage = result;
+          resolve();
+        }
+      })
+      .end(fileBuffer);
+  });
+  return productImage;
+};
+
+export { uploadOnCloudinary, uploadImageToCloudinary };

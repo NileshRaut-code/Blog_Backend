@@ -1,7 +1,10 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Post } from "../models/blog.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  uploadImageToCloudinary,
+  uploadOnCloudinary,
+} from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 import { User } from "../models/user.model.js";
@@ -9,15 +12,19 @@ import { ObjectId } from "mongodb";
 process.env.CORS_DOMAIN;
 const addPost = asyncHandler(async (req, res) => {
   // Create The Post
-  const imagepath = req.file?.path;
+  //const imagepath = req.file?.path;
+  const imagebuffer = req?.file?.buffer;
   req.body.author = req.user._id;
   // //console.log(req.body);
   // //console.log(req.body.author);
   // //console.log(req.body.image);
   // //console.log(req.user);
 
-  if (imagepath) {
-    const imageurl = await uploadOnCloudinary(imagepath);
+  if (imagebuffer) {
+    const imageurl = await uploadImageToCloudinary(imagebuffer);
+    if (!imageurl) {
+      throw new ApiError(404, "Image is not Uploaded Properly");
+    }
     req.body.image = imageurl.url;
   }
   //console.log(req.body);
