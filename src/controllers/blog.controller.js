@@ -13,7 +13,7 @@ process.env.CORS_DOMAIN;
 const addPost = asyncHandler(async (req, res) => {
   // Create The Post
   //const imagepath = req.file?.path;
-  const imagebuffer = req?.file?.buffer;
+  const imagebuffer = req?.files[0]?.buffer;
   req.body.author = req.user._id;
   // //console.log(req.body);
   // //console.log(req.body.author);
@@ -27,12 +27,12 @@ const addPost = asyncHandler(async (req, res) => {
     }
     req.body.image = imageurl.url;
   }
-  //console.log(req.body);
-  const existedUser = await Post.findOne({
+  console.log(req.body);
+  const existedPOst = await Post.findOne({
     $or: [{ title: req.body.title }, { slug: req.body.slug }],
   });
 
-  if (existedUser) {
+  if (existedPOst) {
     throw new ApiError(409, "Post with Title or Slug already exists");
   }
 
