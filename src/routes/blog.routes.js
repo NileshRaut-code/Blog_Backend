@@ -19,7 +19,9 @@ router.route("/addpost").post(verifyJWT, upload.any("image", 1), addPost);
 
 router.route("/post/:slug").get(getPost);
 
-router.route("/post/edit/:id").put(verifyJWT, verifyOwner, editPost);
+router
+  .route("/post/edit/:id")
+  .put(verifyJWT, verifyOwner, upload.any("image", 1), editPost);
 router.route("/post/delete/:id").delete(verifyJWT, verifyOwner, deletePost);
 
 router.route("/author/:username").get(getAuthor);

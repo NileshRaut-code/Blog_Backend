@@ -75,14 +75,25 @@ const getPost = asyncHandler(async (req, res) => {
 const editPost = asyncHandler(async (req, res) => {
   const postId = req.params;
   const { title, description } = req.body;
-  console.log(title, description);
+  const updatingfields = {};
+  if (title) {
+    updatingfields.title = title;
+  }
+  if (description) {
+    updatingfields.description = description;
+  }
+  if (req?.files[0]?.buffer) {
+    const imageurl = await uploadImageToCloudinary(req?.files[0]?.buffer);
+    if (!imageurl) {
+      throw new ApiError(404, "Image is not Uploaded Properly");
+    }
+    updatingfields.image = imageurl.url;
+  }
+  console.log(updatingfields);
   const data = await Post.findByIdAndUpdate(
     new ObjectId(postId),
     {
-      $set: {
-        title,
-        description,
-      },
+      $set: updatingfields,
     },
     { new: true }
   ).select("");
