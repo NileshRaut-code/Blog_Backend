@@ -127,4 +127,25 @@ const getAuthor = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, userProfiledata, "User Profile data "));
 });
 
-export { addPost, allPosts, getPost, editPost, deletePost, getAuthor };
+const searchpost = asyncHandler(async (req, res) => {
+  const { searchkey } = req.params;
+  const post = await Post.find({
+    title: { $regex: searchkey, $options: "i" },
+  }).populate({
+    path: "author",
+    select: "-password -refreshToken",
+  });
+  ////console.log(post);
+
+  res.status(200).json({ size: post.length, data: post });
+});
+
+export {
+  addPost,
+  allPosts,
+  getPost,
+  editPost,
+  deletePost,
+  getAuthor,
+  searchpost,
+};

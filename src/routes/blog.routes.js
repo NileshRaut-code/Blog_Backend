@@ -8,6 +8,7 @@ import {
   editPost,
   deletePost,
   getAuthor,
+  searchpost,
 } from "../controllers/blog.controller.js";
 import { verifyOwner } from "../middlewares/owner.middleware.js";
 import multer from "multer";
@@ -15,6 +16,7 @@ const router = Router();
 const upload = multer();
 
 router.route("/allpost").get(allPosts);
+router.route("/allpost/search/:searchkey").get(searchpost);
 router.route("/addpost").post(verifyJWT, upload.any("image", 1), addPost);
 
 router.route("/post/:slug").get(getPost);
