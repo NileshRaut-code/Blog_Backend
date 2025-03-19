@@ -26,18 +26,9 @@ const generateAccessAndRefereshTokens = async (userId) => {
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  // get user details from frontend
-  // validation - not empty
-  // check if user already exists: username, email
-  // check for images, check for avatar
-  // upload them to cloudinary, avatar
-  // create user object - create entry in db
-  // remove password and refresh token field from response
-  // check for user creation
-  // return res
+
 
   const { fullName, email, username, password, phoneno } = req.body;
-  //console.log(req.body);
   if (phoneno == null) {
     throw new ApiError(400, "Phone no is required");
   }
@@ -102,27 +93,15 @@ const registerUser = asyncHandler(async (req, res) => {
         "User logged In Successfully"
       )
     );
-  // const options = {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: "none",
-  // };
-
-  // return res
-  //   .status(201)
-  //   .cookie("accessToken", accessToken, options)
-  //   .cookie("refreshToken", refreshToken, options)
-  //   .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+ 
 });
 const getCurrentUser = asyncHandler(async (req, res) => {
-  //console.log(req.user);
   return res
     .status(200)
     .json(new ApiResponse(200, req.user, "User fetched successfully"));
 });
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
-  ////console.log(email);
 
   if (!username && !email) {
     throw new ApiError(400, "username or email is required");
@@ -260,8 +239,8 @@ const GoogleloginUser = asyncHandler(async (req, res) => {
 
   const payload = ticket.getPayload();
   const {email}=payload
-  if (email) {
-    throw new ApiError(400, "username or email is required");
+  if (!email) {
+    throw new ApiError(400, "email is required");
   }
 
   const user = await User.findOne({
