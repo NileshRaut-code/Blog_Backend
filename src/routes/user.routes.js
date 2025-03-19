@@ -3,7 +3,7 @@ import {
   getCurrentUser,
   loginUser,
   logoutUser,
-  registerUser,
+  registerUser,GoogleloginUser
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -15,4 +15,6 @@ router.route("/login").post(loginUser);
 
 router.route("/logout").delete(verifyJWT, logoutUser);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
+router.route("/google-login").post(GoogleloginUser);
+
 export default router;

@@ -246,10 +246,71 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
+const GoogleloginUser = asyncHandler(async (req, res) => {
+
+  const { token } = req.body;
+  if (!token){throw new ApiError(400, "The  Token are Not pResent");}
+
+  ////console.log(email);
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.CLIENT_ID,
+  });
+
+  const payload = ticket.getPayload();
+  const {email}=payload
+  if (email) {
+    throw new ApiError(400, "username or email is required");
+  }
+
+  const user = await User.findOne({
+    email 
+  });
+
+  if (!user) {
+    throw new ApiError(404, "User does not exist");
+  }
+
+  const isPasswordValid = await user.isPasswordCorrect(password);
+
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Invalid user credentials");
+  }
+  const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(
+    user._id
+  );
+
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken"
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: loggedInUser,
+          accessToken,
+          refreshToken,
+        },
+        "User logged In Successfully"
+      )
+    );
+});
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,
+  refreshAccessToken,GoogleloginUser
 };
