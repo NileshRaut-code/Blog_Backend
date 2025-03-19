@@ -5,6 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { OAuth2Client } from 'google-auth-library';
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -250,7 +251,7 @@ const GoogleloginUser = asyncHandler(async (req, res) => {
 
   const { token } = req.body;
   if (!token){throw new ApiError(400, "The  Token are Not pResent");}
-
+  const client = new OAuth2Client(process.env.CLIENT_ID);
   ////console.log(email);
   const ticket = await client.verifyIdToken({
     idToken: token,
