@@ -90,7 +90,7 @@ const registerUser = asyncHandler(async (req, res) => {
           accessToken,
           refreshToken,
         },
-        "User logged In Successfully"
+        "User verified successfully"
       )
     );
  
@@ -282,6 +282,46 @@ const GoogleloginUser = asyncHandler(async (req, res) => {
       )
     );
 });
+
+
+const VerifyUser =asyncHandler(async(req,res)=>{
+    const {_id} =req.user
+    const {code}=req.body
+    if (!_id) {
+      throw new ApiError(400, "The user is not authorized");
+    }
+
+
+    const user=await User.findById(_id).select(
+      "-password -refreshToken"
+    );
+
+    if (!user) {
+      throw new ApiError(404, "The USer not present");
+    }
+
+    if (user.isVerified) {
+      throw new ApiError(400, "The user is already verified");
+    }
+
+    if(user.isCode===code){
+      user.isCode=NULL;
+      user.isVerified=true;
+      await user.save();
+      res.json(
+        new ApiResponse(
+          200,
+          {
+            user
+          },
+          "User Verified Successfully"
+        )
+      );
+    }
+    else {
+      throw new ApiError(400, "Invalid verification code"); 
+  }
+})
 
 export {
   registerUser,

@@ -32,14 +32,22 @@ const userSchema = new Schema(
     refreshToken: {
       type: String,
     },
+
+    isVerified:{
+      type:Boolean,
+      required: true,
+    },
+    isCode:{
+      type:Number,
+    },
     avatar: {
-      type: String, // cloudinary url
+      type: String, 
       default:
         "https://res.cloudinary.com/dowwcdnts/image/upload/v1706078608/x3neqhcnnaazgg8ay46p.png",
       // required: true,
     },
     coverImage: {
-      type: String, // cloudinary url
+      type: String, 
       default:
         "https://res.cloudinary.com/dowwcdnts/image/upload/v1706079184/yiobla8dr5dqfmvfduk0.jpg",
     },
