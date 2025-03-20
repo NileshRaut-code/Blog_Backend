@@ -36,6 +36,7 @@ const userSchema = new Schema(
     isVerified:{
       type:Boolean,
       required: true,
+      default:false
     },
     isCode:{
       type:Number,
