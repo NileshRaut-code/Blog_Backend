@@ -48,13 +48,18 @@ const registerUser = asyncHandler(async (req, res) => {
     });
   }
 
+  const otpcode= Math.floor(1000 + Math.random() * 9000);
+
   const user = await User.create({
     fullName,
     email,
     password,
     phoneno,
     username: username.toLowerCase(),
+    isCode:otpcode
   });
+
+  
 
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
