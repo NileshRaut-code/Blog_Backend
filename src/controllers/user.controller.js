@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { OAuth2Client } from 'google-auth-library';
+import Email from "../utils/Email.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -59,7 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
     isCode:otpcode
   });
 
-  
+
 
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -305,7 +306,7 @@ const VerifyUser =asyncHandler(async(req,res)=>{
       throw new ApiError(404, "The USer not present");
     }
 
-    if (user.isVerified) {
+    if (user.isVerified===true) {
       throw new ApiError(400, "The user is already verified");
     }
 
@@ -328,10 +329,36 @@ const VerifyUser =asyncHandler(async(req,res)=>{
   }
 })
 
+const ResetOtp=asyncHandler(async(req,res)=>{
+  const {_id}=req.user;
+
+  const user=await User.findById(_id).select(
+    "-password -refreshToken"
+  );
+
+  if (!user) {
+    throw new ApiError(404, "The USer not present");
+  }
+
+  if (user.isVerified===true) {
+    throw new ApiError(400, "The user is already verified");
+  }
+
+  const otpcode= Math.floor(1000 + Math.random() * 9000);
+  user.isCode=otpcode;
+  user.save()
+
+  await Email(otpcode,user.email);
+
+  res.json(new ApiResponse(200,"OTP SEND SuccesFully"))
+
+
+})
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,GoogleloginUser,VerifyUser
+  refreshAccessToken,GoogleloginUser,VerifyUser,ResetOtp
 };

@@ -3,7 +3,7 @@ import {
   getCurrentUser,
   loginUser,
   logoutUser,
-  registerUser,GoogleloginUser,VerifyUser
+  registerUser,GoogleloginUser,VerifyUser,ResetOtp
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -17,5 +17,6 @@ router.route("/logout").delete(verifyJWT, logoutUser);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/google-login").post(GoogleloginUser);
 router.route("/verifyotp").post(verifyJWT,VerifyUser);
+router.route("/reset-otp").post(verifyJWT,ResetOtp);
 
 export default router;
