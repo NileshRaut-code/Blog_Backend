@@ -311,7 +311,7 @@ const VerifyUser =asyncHandler(async(req,res)=>{
     }
 
     if(user.isCode===code){
-      user.isCode=NULL;
+      user.isCode=null;
       user.isVerified=true;
       await user.save();
       res.json(
