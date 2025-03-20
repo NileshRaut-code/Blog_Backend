@@ -328,5 +328,5 @@ export {
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,GoogleloginUser
+  refreshAccessToken,GoogleloginUser,VerifyUser
 };
