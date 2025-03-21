@@ -9,7 +9,7 @@ export const GetAllpending=asyncHandler(async(req,res)=>{
         throw new ApiError(400,"Invalid post state")
     }
     
-    const PostData=await Post.find({state:pstate}).select("_id title state")
+    const PostData=await Post.find({state:pstate}).select("_id title description state")
     res.json(new ApiResponse(200, PostData, "Post Succesfull fetched"));
 })
 

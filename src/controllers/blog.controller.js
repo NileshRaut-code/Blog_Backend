@@ -62,7 +62,8 @@ const allPosts = asyncHandler(async (req, res) => {
 const getPost = asyncHandler(async (req, res) => {
   const { slug } = req.params;
   ////console.log(req.params);
-  const post = await Post.findOne({ slug: slug }).populate({
+
+  const post = await Post.findOne({ slug: slug, state: "approved" }).populate({
     path: "author",
     select: "-password -refreshToken",
   });
