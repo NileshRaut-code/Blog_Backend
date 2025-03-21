@@ -10,7 +10,7 @@ export const GetAllpending=asyncHandler(async(req,res)=>{
     }
     
     const PostData=await Post.find({state:pstate}).select("_id state")
-    return res.status(200).json(PostData)
+    res.json(new ApiResponse(200, PostData, "Post Succesfull fetched"));
 })
 
 
@@ -24,5 +24,5 @@ export const MakePostState=asyncHandler(async(req,res)=>{
     }
     PostData.state=state
     await PostData.save()
-    return res.status(200).json(PostData)
+    res.json(new ApiResponse(200, PostData, `Post Succesfull ${state}`));
 })
