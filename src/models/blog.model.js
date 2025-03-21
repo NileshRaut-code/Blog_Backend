@@ -29,6 +29,11 @@ const PostSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Author is required"],
     },
+    state:{
+      type:String,
+      enum: ["pending", "approved", "rejected"], 
+      default: "pending"
+    }
   },
   {
     timestamps: true,

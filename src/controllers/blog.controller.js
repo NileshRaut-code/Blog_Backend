@@ -50,7 +50,7 @@ const addPost = asyncHandler(async (req, res) => {
 });
 
 const allPosts = asyncHandler(async (req, res) => {
-  const post = await Post.find().populate({
+  const post = await Post.find({state:"approved"}).populate({
     path: "author",
     select: "-password -refreshToken",
   });

@@ -52,6 +52,11 @@ const userSchema = new Schema(
       default:
         "https://res.cloudinary.com/dowwcdnts/image/upload/v1706079184/yiobla8dr5dqfmvfduk0.jpg",
     },
+    role:{
+      type:String,
+      enum:["user","admin","blocked"],
+      default:"user"
+    }
   },
   {
     timestamps: true,
