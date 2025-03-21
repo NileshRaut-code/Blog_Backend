@@ -2,4 +2,4 @@
 
 #Blog App Backend Architecture
 
-![hld of backend app](https://github.com/user-attachments/assets/fecdda4a-81b1-4590-af47-f519aa6e9000)
+![Blog App Backend Architecture](https://github.com/user-attachments/assets/4c9bf028-9932-47d0-a19a-8ad621a9c0e5)
