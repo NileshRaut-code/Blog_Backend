@@ -28,6 +28,6 @@ export const MakePostState=asyncHandler(async(req,res)=>{
 })
 
 export const AllUser=asyncHandler(async(req,res)=>{
-    const allUsers = await User.find().select("-password -refreshToken");
+    const allUsers = await User.find().select("_id username email fullName isVerified");
   res.json(new ApiResponse(200, allUsers, "Users fetched successfully"));
 })
