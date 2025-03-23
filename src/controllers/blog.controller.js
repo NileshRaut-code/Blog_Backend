@@ -9,16 +9,13 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 import { User } from "../models/user.model.js";
 import { ObjectId } from "mongodb";
+import redisClient from "../db/redis.js";
 process.env.CORS_DOMAIN;
 const addPost = asyncHandler(async (req, res) => {
-  // Create The Post
-  //const imagepath = req.file?.path;
+
   const imagebuffer = req?.files[0]?.buffer;
   req.body.author = req.user._id;
-  // //console.log(req.body);
-  // //console.log(req.body.author);
-  // //console.log(req.body.image);
-  // //console.log(req.user);
+
 
   if (imagebuffer) {
     const imageurl = await uploadImageToCloudinary(imagebuffer);
@@ -62,6 +59,11 @@ const allPosts = asyncHandler(async (req, res) => {
 const getPost = asyncHandler(async (req, res) => {
   const { slug } = req.params;
   ////console.log(req.params);
+  const redisdata=await redisClient.json.get(`slug:${slug}`)
+
+  if(redisdata){
+    res.json(new ApiResponse(200, redisdata, "cached Post Succesfull fetched"));
+  }
 
   const post = await Post.findOne({ slug: slug, state: "approved" }).populate({
     path: "author",
@@ -70,6 +72,8 @@ const getPost = asyncHandler(async (req, res) => {
   if (!post) {
     throw new ApiError(404, "Post not exist");
   }
+  await redisClient.json.set(`slug:${slug}`,"$",post)
+  await redisClient.expire(`slug:${slug}`,30)
   res.json(new ApiResponse(200, post, "Post Succesfull fetched"));
 });
 
