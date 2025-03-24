@@ -398,7 +398,7 @@ const ResetOtp=asyncHandler(async(req,res)=>{
 })
 
 
-const PReset = asyncHandler(async (req, res) => {
+const ChangedPassword = asyncHandler(async (req, res) => {
   const { oldPassword, newPassword } = req.body;
   const userId = req.user._id;
 
@@ -441,5 +441,5 @@ export {
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,GoogleloginUser,VerifyUser,ResetOtp,PReset
+  refreshAccessToken,GoogleloginUser,VerifyUser,ResetOtp,ChangedPassword
 };
