@@ -43,6 +43,20 @@ const addPost = asyncHandler(async (req, res) => {
     { new: true }
   );
 
+  const subject = "Your Post Has Been Sent for Admin Approval!";
+  const message = `
+    Hi ${req.user.fullName},
+    
+    Your post titled "${req.body.title}" has been successfully submitted and is now awaiting admin approval. You will be notified once it has been reviewed and approved.
+    
+    If you have any questions or need assistance, feel free to reach out to our support team.
+    
+    Best regards,
+    Blog.Technilesh.com Team
+  `;
+  
+  await Email(message, req.user.email, subject);
+
   res.json(new ApiResponse(200, post, "Post Succesfully created"));
 });
 

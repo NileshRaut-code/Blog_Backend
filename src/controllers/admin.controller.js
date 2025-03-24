@@ -17,13 +17,34 @@ export const GetAllpending=asyncHandler(async(req,res)=>{
 export const MakePostState=asyncHandler(async(req,res)=>{
     const {_id,state}=req.query
     if(!_id || !state){throw new ApiError(400,"The Id and State is Required")}
-    const PostData=await Post.findById(_id).select("_id state")
+    const PostData = await Post.findById(_id)
+    .select("_id state author")
+    .populate("author", "fullName email");
+
 
     if(!PostData){
         throw new ApiError (404,"The Post Does Not EXist")
     }
+
     PostData.state=state
     await PostData.save()
+
+    if (state === "approved") {
+       
+        const subject = "Your Post Has Been Successfully Approved!";
+        const message = `
+            Hi ${PostData.author.fullName},
+            
+            Congratulations! Your post has been successfully approved and is now live on our platform.
+            
+            If you have any questions or need assistance, feel free to reach out to our support team.
+            
+            Best regards,
+            Blog.Technilesh.com Team
+        `;
+        
+        await Email(message, PostData.author.email, subject);
+    }
     res.json(new ApiResponse(200, PostData, `Post Succesfull ${state}`));
 })
 
