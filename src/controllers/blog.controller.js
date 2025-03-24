@@ -73,23 +73,45 @@ const allPosts = asyncHandler(async (req, res) => {
 
 const getPost = asyncHandler(async (req, res) => {
   const { slug } = req.params;
-  ////console.log(req.params);
-  const redisdata=await redisClient.json.get(`slug:${slug}`)
+  const { state } = req.query; 
 
-  if(redisdata){
-    res.json(new ApiResponse(200, redisdata, "cached Post Succesfull fetched"));
+  let post; 
+
+  if (state === "update") {
+    post = await Post.findOne({ slug: slug, state: "approved" }).populate({
+      path: "author",
+      select: "_id username avatar fullName",
+    });
+
+    if (!post) {
+      throw new ApiError(404, "Post not exist");
+    }
+
+    await redisClient.json.set(`slug:${slug}`, "$", post);
+    await redisClient.expire(`slug:${slug}`, 30);
+
+    return res.json(new ApiResponse(200, post, "Post Successfully fetched from DB and cache updated"));
+  } else {
+    const redisdata = await redisClient.json.get(`slug:${slug}`);
+
+    if (redisdata) {
+      return res.json(new ApiResponse(200, redisdata, "Cached Post Successfully fetched"));
+    }
+
+    post = await Post.findOne({ slug: slug, state: "approved" }).populate({
+      path: "author",
+      select: "_id username avatar fullName",
+    });
+
+    if (!post) {
+      throw new ApiError(404, "Post not exist");
+    }
+
+    await redisClient.json.set(`slug:${slug}`, "$", post);
+    await redisClient.expire(`slug:${slug}`, 30);
   }
 
-  const post = await Post.findOne({ slug: slug, state: "approved" }).populate({
-    path: "author",
-    select: "_id username avatar fullName",
-  });
-  if (!post) {
-    throw new ApiError(404, "Post not exist");
-  }
-  await redisClient.json.set(`slug:${slug}`,"$",post)
-  await redisClient.expire(`slug:${slug}`,30)
-  res.json(new ApiResponse(200, post, "Post Succesfull fetched"));
+  res.json(new ApiResponse(200, post, "Post Successfully fetched"));
 });
 
 const editPost = asyncHandler(async (req, res) => {
@@ -116,9 +138,12 @@ const editPost = asyncHandler(async (req, res) => {
       $set: updatingfields,
     },
     { new: true }
-  ).select("");
-  // ////console.log(data);
-
+  ).populate({
+    path: "author",
+    select: "_id username avatar fullName",
+  });
+  await redisClient.json.set(`slug:${data.slug}`, "$", data);
+  await redisClient.expire(`slug:${data.slug}`, 30);
   res.json(new ApiResponse(200, data, "Post Succesfully Edited"));
 });
 const deletePost = asyncHandler(async (req, res) => {
