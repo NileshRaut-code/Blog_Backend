@@ -355,7 +355,7 @@ const VerifyUser =asyncHandler(async(req,res)=>{
       );
     }
     else {
-      throw new ApiError(400, "Invalid verification code"); 
+      throw new ApiError(400, "Wrong Otp"); 
   }
 })
 
@@ -415,7 +415,7 @@ const ChangedPassword = asyncHandler(async (req, res) => {
   const isPasswordValid = await user.isPasswordCorrect(oldPassword);
 
   if (!isPasswordValid) {
-    throw new ApiError(400, "Invalid old password");
+    throw new ApiError(400, "Wrong old password");
   }
 
   user.password = newPassword; // This will automatically hash the password due to the pre-save hook in the User model
