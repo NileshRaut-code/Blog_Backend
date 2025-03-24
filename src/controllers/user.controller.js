@@ -397,10 +397,49 @@ const ResetOtp=asyncHandler(async(req,res)=>{
 
 })
 
+
+const ChangePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const userId = req.user._id;
+
+  if (!oldPassword || !newPassword) {
+    throw new ApiError(400, "Old password and new password are required");
+  }
+
+  const user = await User.findById(userId);
+
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  const isPasswordValid = await user.isPasswordCorrect(oldPassword);
+
+  if (!isPasswordValid) {
+    throw new ApiError(400, "Invalid old password");
+  }
+
+  user.password = newPassword; // This will automatically hash the password due to the pre-save hook in the User model
+  await user.save();
+  const subject = "Your Password Has Been Successfully Changed!";
+  const message = `
+    Hi ${user.fullName},
+    
+    We wanted to let you know that your password has been successfully changed. If you did not make this change, please contact our support team immediately.
+    
+    If you have any questions or need assistance, feel free to reach out to our support team.
+    
+    Best regards,
+    Blog.Technilesh.com Team
+  `;
+    
+  await Email(message, user.email, subject);
+  res.json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,GoogleloginUser,VerifyUser,ResetOtp
+  refreshAccessToken,GoogleloginUser,VerifyUser,ResetOtp,ChangePassword
 };
