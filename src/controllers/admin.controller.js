@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
+import Email from "../utils/Email.js";
 export const GetAllpending=asyncHandler(async(req,res)=>{
     const {pstate}=req.params
     if(!["approved", "rejected", "pending"].includes(pstate)){

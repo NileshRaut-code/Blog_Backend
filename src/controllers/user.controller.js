@@ -378,21 +378,19 @@ const ResetOtp=asyncHandler(async(req,res)=>{
   user.isCode=otpcode;
   user.save()
 
-  const subject = "Your OTP Has Been Reset Successfully!";
-  const message = `
-    Hi ${user.fullName},
-    
-    Your OTP has been reset successfully. Please use the following OTP to verify your account:
-    
-    OTP: ${otpcode}
-    
-    If you did not request this change, please contact our support team immediately.
-    
-    Best regards,
-    Blog.Technilesh.com Team
-  `;
-  
-  await Email(message, user.email, subject);
+  const subject = "Your Account Has Been Successfully Verified!";
+      const message = `
+        Hi ${user.fullName},
+        
+        Congratulations! Your account has been successfully verified. You can now enjoy full access to our platform and its features.
+        
+        If you have any questions or need assistance, feel free to reach out to our support team.
+        
+        Best regards,
+        Blog.Technilesh.com Team
+      `;
+        
+      await Email(message, user.email, subject);
 
   res.json(new ApiResponse(200,"OTP SEND SuccesFully"))
 

@@ -10,6 +10,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
 import { ObjectId } from "mongodb";
 import redisClient from "../db/redis.js";
+import Email from "../utils/Email.js";
 process.env.CORS_DOMAIN;
 const addPost = asyncHandler(async (req, res) => {
 
@@ -57,7 +58,7 @@ const addPost = asyncHandler(async (req, res) => {
   
   await Email(message, req.user.email, subject);
 
-  res.json(new ApiResponse(200, post, "Post Succesfully created"));
+  res.json(new ApiResponse(200, {}, "Post Succesfully created and Sended to the Admin For Approvals"));
 });
 
 const allPosts = asyncHandler(async (req, res) => {
