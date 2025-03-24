@@ -82,7 +82,7 @@ const getPost = asyncHandler(async (req, res) => {
 
   const post = await Post.findOne({ slug: slug, state: "approved" }).populate({
     path: "author",
-    select: "-password -refreshToken",
+    select: "_id username avatar fullName",
   });
   if (!post) {
     throw new ApiError(404, "Post not exist");
