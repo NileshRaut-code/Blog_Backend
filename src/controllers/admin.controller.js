@@ -6,11 +6,15 @@ import { User } from "../models/user.model.js";
 import Email from "../utils/Email.js";
 export const GetAllpending=asyncHandler(async(req,res)=>{
     const {pstate}=req.params
+    const { page = 1, limit = 10 } = req.query;
     if(!["approved", "rejected", "pending"].includes(pstate)){
         throw new ApiError(400,"Invalid post state")
     }
+    const skip = (page - 1) * limit; // Calculate the number of documents to skip
+
     
-    const PostData=await Post.find({state:pstate}).select("_id title description role state")
+    const PostData=await Post.find({state:pstate}).select("_id title description role state").skip(skip)
+    .limit(parseInt(limit));
     res.json(new ApiResponse(200, PostData, "Post Succesfull fetched"));
 })
 
