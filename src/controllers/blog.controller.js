@@ -62,10 +62,15 @@ const addPost = asyncHandler(async (req, res) => {
 });
 
 const allPosts = asyncHandler(async (req, res) => {
+
+  const {pstate}=req.params
+    const { page = 1, limit = 12 } = req.query;
+    const skip = (page - 1) * limit; 
   const post = await Post.find({state:"approved"}).populate({
     path: "author",
     select: "-password -refreshToken",
-  });
+  }).skip(skip)
+  .limit(parseInt(limit));;
   ////console.log(post);
 
   res.status(200).json({ size: post.length, data: post });
