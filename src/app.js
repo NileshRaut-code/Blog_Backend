@@ -30,6 +30,9 @@ app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.redirect(process.env.CORS_ORIGIN2);
+});
 import userRouter from "./routes/user.routes.js";
 import blogRouter from "./routes/blog.routes.js";
 import adminRouter from "./routes/admin.routes.js"
