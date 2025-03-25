@@ -69,8 +69,10 @@ const allPosts = asyncHandler(async (req, res) => {
   const post = await Post.find({state:"approved"}).populate({
     path: "author",
     select: "-password -refreshToken",
-  }).skip(skip)
-  .limit(parseInt(limit));;
+  })
+  .sort({ updatedAt: -1 })
+  .skip(skip)
+  .limit(parseInt(limit));
   ////console.log(post);
 
   res.status(200).json({ size: post.length, data: post });
