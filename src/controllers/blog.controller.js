@@ -195,7 +195,7 @@ const searchpost = asyncHandler(async (req, res) => {
 
 const blogSitemap = asyncHandler(async (req, res) => {
   try {
-    const baseUrl ="https://blog.technilesh.com"; 
+    const baseUrl =process.env.CORS_ORIGIN2; 
     const posts = await Post.find({ state: "approved" }).select("slug updatedAt");
 
     const authors = await User.aggregate([
