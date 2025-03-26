@@ -195,7 +195,6 @@ const searchpost = asyncHandler(async (req, res) => {
 
 const blogSitemap = asyncHandler(async (req, res) => {
   try {
-    const baseUrl =process.env.CORS_ORIGIN2; 
     const posts = await Post.find({ state: "approved" }).select("slug updatedAt");
 
     const authors = await User.aggregate([
@@ -232,39 +231,8 @@ const blogSitemap = asyncHandler(async (req, res) => {
       }
     ]);
 
-    let xml = `<?xml version="1.0" encoding="UTF-8"?>
-      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-        <url>
-          <loc>${baseUrl}</loc>
-          <lastmod>${new Date().toISOString()}</lastmod>
-          <changefreq>daily</changefreq>
-          <priority>1.0</priority>
-        </url>`;
-
-    for (const post of posts) {
-      xml += `
-        <url>
-          <loc>${`${baseUrl}/blog/${post.slug}`}</loc>
-          <lastmod>${post.updatedAt.toISOString()}</lastmod>
-          <changefreq>weekly</changefreq>
-          <priority>0.8</priority>
-        </url>`;
-    }
-
-    for (const author of authors) {
-      xml += `
-        <url>
-          <loc>${`${baseUrl}/author/${author.username}`}</loc>
-          <lastmod>${author.updatedAt ? author.updatedAt.toISOString() : new Date().toISOString()}</lastmod>
-          <changefreq>weekly</changefreq>
-          <priority>0.7</priority>
-        </url>`;
-    }
-
-    xml += `</urlset>`;
-
-    res.header("Content-Type", "application/xml");
-    res.status(200).send(xml.toString());
+    
+    res.status(200).json({ posts,authors });
   } catch (error) {
     console.error("Error generating sitemap:", error);
     throw new ApiError(500, "Could not generate sitemap");
