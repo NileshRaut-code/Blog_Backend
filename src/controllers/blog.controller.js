@@ -264,7 +264,7 @@ const blogSitemap = asyncHandler(async (req, res) => {
     xml += `</urlset>`;
 
     res.header("Content-Type", "application/xml");
-    res.status(200).send(xml);
+    res.status(200).send(xml.toString());
   } catch (error) {
     console.error("Error generating sitemap:", error);
     throw new ApiError(500, "Could not generate sitemap");
