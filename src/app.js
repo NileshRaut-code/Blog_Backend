@@ -37,7 +37,10 @@ import userRouter from "./routes/user.routes.js";
 import blogRouter from "./routes/blog.routes.js";
 import adminRouter from "./routes/admin.routes.js"
 import { verifyadmin } from "./middlewares/admin.middleware.js";
+import { blogSitemap } from "./controllers/blog.controller.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/blog", blogRouter);
 app.use("/api/v1/admin",verifyadmin,adminRouter);
+app.get("/sitemap.xml",blogSitemap);
+
 export { app };

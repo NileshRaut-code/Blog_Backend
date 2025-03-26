@@ -9,7 +9,6 @@ import {
   deletePost,
   getAuthor,
   searchpost,
-  blogSitemap,
 } from "../controllers/blog.controller.js";
 import { verifyOwner } from "../middlewares/owner.middleware.js";
 import multer from "multer";
@@ -28,6 +27,5 @@ router
 router.route("/post/delete/:id").delete(verifyJWT, verifyOwner, deletePost);
 
 router.route("/author/:username").get(getAuthor);
-router.route("/sitemap").get(blogSitemap);
 
 export default router;
