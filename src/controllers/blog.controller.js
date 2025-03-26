@@ -192,6 +192,85 @@ const searchpost = asyncHandler(async (req, res) => {
   res.status(200).json({ size: post.length, data: post });
 });
 
+
+const blogSitemap = asyncHandler(async (req, res) => {
+  try {
+    const baseUrl ="https://blog.technilesh.com"; 
+    const posts = await Post.find({ state: "approved" }).select("slug updatedAt");
+
+    const authors = await User.aggregate([
+      {
+        $lookup: {
+          from: "posts", 
+          let: { user_id: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$author", "$$user_id"] },
+                    { $eq: ["$state", "approved"] } 
+                  ]
+                }
+              }
+            }
+          ],
+          as: "approvedPosts"
+        }
+      },
+      {
+        $match: {
+          "approvedPosts.0": { $exists: true } 
+        }
+      },
+      {
+        $project: {
+          username: 1, 
+          updatedAt: 1, 
+          _id: 0 
+        }
+      }
+    ]);
+
+    let xml = `<?xml version="1.0" encoding="UTF-8"?>
+      <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+        <url>
+          <loc>${baseUrl}</loc>
+          <lastmod>${new Date().toISOString()}</lastmod>
+          <changefreq>daily</changefreq>
+          <priority>1.0</priority>
+        </url>`;
+
+    for (const post of posts) {
+      xml += `
+        <url>
+          <loc>${`${baseUrl}/blog/${post.slug}`}</loc>
+          <lastmod>${post.updatedAt.toISOString()}</lastmod>
+          <changefreq>weekly</changefreq>
+          <priority>0.8</priority>
+        </url>`;
+    }
+
+    for (const author of authors) {
+      xml += `
+        <url>
+          <loc>${`${baseUrl}/author/${author.username}`}</loc>
+          <lastmod>${author.updatedAt ? author.updatedAt.toISOString() : new Date().toISOString()}</lastmod>
+          <changefreq>weekly</changefreq>
+          <priority>0.7</priority>
+        </url>`;
+    }
+
+    xml += `</urlset>`;
+
+    res.header("Content-Type", "application/xml");
+    res.status(200).send(xml);
+  } catch (error) {
+    console.error("Error generating sitemap:", error);
+    throw new ApiError(500, "Could not generate sitemap");
+  }
+});
+
 export {
   addPost,
   allPosts,
@@ -200,4 +279,5 @@ export {
   deletePost,
   getAuthor,
   searchpost,
+  blogSitemap
 };
