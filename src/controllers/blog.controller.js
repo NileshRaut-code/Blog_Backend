@@ -195,7 +195,7 @@ const searchpost = asyncHandler(async (req, res) => {
 
 const blogSitemap = asyncHandler(async (req, res) => {
   try {
-    const baseUrl = process.env.CORS_DOMAIN || "https://blog.technilesh.com";
+    const baseUrl = process.env.CORS_ORIGIN2 || "https://blog.technilesh.com";
     const posts = await Post.find({ state: "approved" }).select("slug updatedAt");
 
     // Aggregate users who have at least one approved post
