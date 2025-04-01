@@ -18,7 +18,7 @@ router.route("/login").post(loginUser);
 router.route("/logout").delete(verifyJWT, logoutUser);
 router.route("/current-user").get(verifyJWT, getCurrentUser);
 router.route("/google-login").post(GoogleloginUser);
-router.route("/google-singup").post(GoogleSignup);
+router.route("/google-signup").post(GoogleSignup);
 
 router.route("/verifyotp").post(verifyJWT,VerifyUser);
 router.route("/reset-otp").post(verifyJWT,ResetOtp);
