@@ -438,10 +438,86 @@ const ChangedPassword = asyncHandler(async (req, res) => {
   res.json(new ApiResponse(200, {}, "Password changed successfully"));
 });
 
+const GoogleSignup = asyncHandler(async (req, res) => {
+  const { token, password } = req.body;
+
+  if (!token) {
+    throw new ApiError(400, "The  Token are Not pResent");
+  }
+
+  const client = new OAuth2Client(process.env.CLIENT_ID);
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.CLIENT_ID,
+  });
+  const data = ticket.getPayload();
+
+  const { name, email, sub, picture } = ticket.getPayload();
+  const username =
+    email.split("@")[0] + Math.floor(1000 + Math.random() * 9000).toString();
+
+  if (!name | !email | !username | !password) {
+    throw new ApiError(400, "All the Filed should be Required");
+  }
+
+  const check = await User.findOne({ $or: [{ email }, { username }, { sub }] });
+  if (check) {
+    throw new ApiError(409, "User us presnet this email or username or sub");
+  }
+  const otp = Math.floor(1000 + Math.random() * 9000);
+
+  const user = await User.create({
+    name,
+    email,
+    username: username.toLowerCase(),
+    sub,
+    picture,
+    isCode: otp,
+    password,
+  });
+
+  await Email(otp, email);
+
+  // if(mailsend)
+
+  const checkuser = await User.findById(user._id).select(
+    "-passowrd -refreshToken"
+  );
+
+  if (!checkuser) {
+    throw new ApiError(500, "Some Error while Creating the User");
+  }
+  //console.log(checkuser);
+
+  const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(
+    user._id
+  );
+  const options = {
+    httpOnly: true,
+    secure: false,
+    sameSite: "Lax",
+  };
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: checkuser,
+          accessToken,
+          refreshToken,
+        },
+        "User logged In Successfully"
+      )
+    );
+});
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,GoogleloginUser,VerifyUser,ResetOtp,ChangedPassword
+  refreshAccessToken,GoogleSignup,GoogleloginUser,VerifyUser,ResetOtp,ChangedPassword
 };
