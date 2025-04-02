@@ -472,13 +472,28 @@ const GoogleSignup = asyncHandler(async (req, res) => {
     email,
     username: username.toLowerCase(),
     sub,
+    fullName:name,
     picture,
     isCode: otp,
     password,
   });
 
-  await Email(otp, email);
+ // await Email(otp, email)
+    const subject = "Welcome to Our Blog.Technilesh.com!";
+  const message = `
+    Hi ${loggedInUser.fullName},
 
+    Welcome to our platform! We're excited to have you on board. Please verify your email address using the OTP sent to your email.
+    
+    OTP : ${otpcode}
+
+    If you have any questions, feel free to reach out to our support team.
+
+    Best regards,
+    Blog.Technilesh.com
+  `;
+
+  await Email(message, user.email, subject);
   // if(mailsend)
 
   const checkuser = await User.findById(user._id).select(
