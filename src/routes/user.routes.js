@@ -24,6 +24,6 @@ router.route("/google-signup").post(GoogleSignup);
 router.route("/verifyotp").post(verifyJWT,VerifyUser);
 router.route("/reset-otp").post(verifyJWT,ResetOtp);
 router.route("/changed-password").post(verifyJWT,ChangedPassword);
-router.route(verifyJWT,"/stat-summary").get(SummaryStat);
+router.route("/stat-summary").get(verifyJWT,SummaryStat);
 
 export default router;
