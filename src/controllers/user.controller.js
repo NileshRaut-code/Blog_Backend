@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import { OAuth2Client } from 'google-auth-library';
 import Email from "../utils/Email.js";
+import { Post } from "../models/blog.model.js";
 
 const generateAccessAndRefereshTokens = async (userId) => {
   try {
@@ -514,10 +515,28 @@ const GoogleSignup = asyncHandler(async (req, res) => {
     );
 });
 
+const SummaryStat=asyncHandler(async(req,res)=>{
+  const userId = req.user._id;
+
+  if (!userId) {
+    throw new ApiError(400, "User ID is required");
+  }
+
+  const posts = await Post.find({ author: userId }).select("views");
+
+  if (!posts || posts.length === 0) {
+    return res.json(new ApiResponse(200, { totalViews: 0 ,totalpost:0}, "No posts found"));
+  }
+
+  const totalViews = posts.reduce((sum, post) => sum + (post.views || 0), 0);
+
+  res.json(new ApiResponse(200, { totalViews,totalpost:posts.length }, "Total views calculated successfully"));
+})
+
 export {
   registerUser,
   loginUser,
   logoutUser,
   getCurrentUser,
-  refreshAccessToken,GoogleSignup,GoogleloginUser,VerifyUser,ResetOtp,ChangedPassword
+  refreshAccessToken,GoogleSignup,GoogleloginUser,VerifyUser,ResetOtp,ChangedPassword,SummaryStat
 };

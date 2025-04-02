@@ -33,6 +33,10 @@ const PostSchema = new mongoose.Schema(
       type:String,
       enum: ["pending", "approved", "rejected"], 
       default: "pending"
+    },
+    views:{
+      type:Number,
+      default:100
     }
   },
   {

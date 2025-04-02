@@ -5,7 +5,8 @@ import {
   logoutUser,
   registerUser,GoogleloginUser,VerifyUser,ResetOtp,
   ChangedPassword,
-  GoogleSignup
+  GoogleSignup,
+  SummaryStat
 } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 
@@ -23,5 +24,6 @@ router.route("/google-signup").post(GoogleSignup);
 router.route("/verifyotp").post(verifyJWT,VerifyUser);
 router.route("/reset-otp").post(verifyJWT,ResetOtp);
 router.route("/changed-password").post(verifyJWT,ChangedPassword);
+router.route(verifyJWT,"/stat-summary").get(SummaryStat);
 
 export default router;
