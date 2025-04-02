@@ -471,6 +471,7 @@ const GoogleSignup = asyncHandler(async (req, res) => {
     email,
     username: username.toLowerCase(),
     sub,
+    fullName:'',
     picture,
     isCode: otp,
     password,
