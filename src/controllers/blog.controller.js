@@ -102,8 +102,10 @@ const getPost = asyncHandler(async (req, res) => {
     const redisdata = await redisClient.json.get(`slug:${slug}`);
 
     if (redisdata) {
+      await redisClient.incr(`view:${slug}`)
       return res.json(new ApiResponse(200, redisdata, "Cached Post Successfully fetched"));
     }
+
 
     post = await Post.findOne({ slug: slug, state: "approved" }).populate({
       path: "author",
@@ -112,6 +114,15 @@ const getPost = asyncHandler(async (req, res) => {
 
     if (!post) {
       throw new ApiError(404, "Post not exist");
+    }
+    const redisViews = await redisClient.get(`view:${slug}`);
+
+    if (redisViews) {
+      post.views += parseInt(redisViews);
+
+      await Post.updateOne({ slug }, { views: post.views });
+    } else {
+      await redisClient.set(`view:${slug}`, post.views);
     }
 
     await redisClient.json.set(`slug:${slug}`, "$", post);
