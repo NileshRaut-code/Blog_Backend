@@ -118,7 +118,7 @@ const getPost = asyncHandler(async (req, res) => {
     const redisViews = await redisClient.get(`view:${slug}`);
 
     if (redisViews) {
-      post.views += parseInt(redisViews);
+      post.views = parseInt(redisViews);
 
       await Post.updateOne({ slug }, { views: post.views });
     } else {
