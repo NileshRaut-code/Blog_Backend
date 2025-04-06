@@ -479,20 +479,20 @@ const GoogleSignup = asyncHandler(async (req, res) => {
   });
 
  // await Email(otp, email)
-    const subject = "Welcome to Our Blog.Technilesh.com!";
-  const message = `
-    Hi ${loggedInUser.fullName},
+   
+ const subject = "Welcome to Our Blog.Technilesh.com!";
+ const message = `
+   Hi ${user.fullName},
 
-    Welcome to our platform! We're excited to have you on board. Please verify your email address using the OTP sent to your email.
-    
-    OTP : ${otpcode}
+   Welcome to our platform! We're excited to have you on board. Please verify your email address using the OTP sent to your email.
+   
+   OTP : ${otpcode}
 
-    If you have any questions, feel free to reach out to our support team.
+   If you have any questions, feel free to reach out to our support team.
 
-    Best regards,
-    Blog.Technilesh.com
-  `;
-
+   Best regards,
+   Blog.Technilesh.com
+ `;
   await Email(message, user.email, subject);
   // if(mailsend)
 
