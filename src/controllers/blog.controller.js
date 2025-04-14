@@ -174,10 +174,10 @@ const getAuthor = asyncHandler(async (req, res) => {
   const { username } = req.params;
 
   const data = await User.findOne({ username: username }).select(
-    "-password -refreshToken"
+    "-password -refreshToken -updatedAt -__v -isVerified -isCode -role"
   );
 
-  const posts = await Post.find({ author: data._id });
+  const posts = await Post.find({ author: data._id }).select("-__v");
   //console.log(posts);
   //console.log(data);
 
