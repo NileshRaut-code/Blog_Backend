@@ -2,7 +2,7 @@ import nodemailer from "nodemailer"
 const Email = async (text,email,subject) => {
     const toEmail =email ? email : "ganya9970@gmail.com";
     const transporter = nodemailer.createTransport({
-      host: process.env.smtp.titan.email,
+      host: process.env.EMAIL_HOST,
 port: 465,
 secure: true,
       auth: {
